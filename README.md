@@ -11,6 +11,11 @@ npx hardhat node
 node scripts/deploy.js --network rinkeby
 npx hardhat help
 ```
+## Airdrop test:
+```shell
+node test/Airdrop.test.js
+```
+
 
 ## Proxy Deploy:
 ```shell
