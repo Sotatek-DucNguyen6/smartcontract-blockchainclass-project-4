@@ -4,12 +4,10 @@ import "../coins/MyMarketPlaceCoin.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/StorageSlot.sol";
 import "./MarketplaceV1.sol";
-
 contract MarketplaceV2 is MarketplaceV1 {
     function version() public pure virtual override returns (string memory) {
         return "V2";
     }
-
     function CreateOrder(uint256 tokenId, uint256 price)
         external
         override
@@ -27,12 +25,10 @@ contract MarketplaceV2 is MarketplaceV1 {
                 isSold: false
             })
         );
-
         assert(items[newItemId].id == newItemId);
         emit SellerCreateOrder(newItemId, tokenId, price);
         return newItemId;
     }
-
     function MatchOrder(uint256 id)
         external
         payable
@@ -42,16 +38,12 @@ contract MarketplaceV2 is MarketplaceV1 {
     {
         uint256 price = items[id].price;
         uint256 payForSeller = price - ((price / 4) / 100);
-
         uint256 payForTreasury = ((price / 4) / 100) + ((price / 4) / 100);
-
         require(
             msg.value >= payForSeller + payForTreasury,
             "Not enough funds sent"
         );
-
         require(msg.sender != items[id].seller);
-
         items[id].isSold = true;
         super.getToken().safeTransferFrom(
             items[id].seller,

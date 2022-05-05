@@ -3,7 +3,6 @@ const { ethers, upgrades } = require("hardhat");
 require("@nomiclabs/hardhat-waffle");
 require('@openzeppelin/hardhat-upgrades');
 require('dotenv').config();
-
 const CURRENT_PROXY_ADDRESS = process.env.CURRENT_PROXY_ADDRESS;
 async function main() {
     // Deploying

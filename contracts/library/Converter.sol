@@ -1,7 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.13;
 import "hardhat/console.sol";
-
 contract Converter {
     function fromHexChar(uint8 c) public pure returns (uint8) {
         if (bytes1(c) >= bytes1("0") && bytes1(c) <= bytes1("9")) {
@@ -15,7 +14,6 @@ contract Converter {
         }
         return 0;
     }
-
     function hexStringToAddress(string memory s)
         public
         pure
@@ -33,7 +31,6 @@ contract Converter {
         }
         return r;
     }
-
     function toAddress(string memory s) public pure returns (address) {
         bytes memory _bytes = hexStringToAddress(s);
         // require(_bytes.length >= 1 + 20, "toAddress_outOfBounds");
@@ -46,7 +43,6 @@ contract Converter {
         }
         return tempAddress;
     }
-
     function toAsciiString(address x) public pure returns (string memory) {
         bytes memory s = new bytes(40);
         for (uint256 i = 0; i < 20; i++) {
@@ -58,7 +54,6 @@ contract Converter {
         }
         return string(s);
     }
-
     function char(bytes1 b) public pure returns (bytes1 c) {
         if (uint8(b) < 10) return bytes1(uint8(b) + 0x30);
         else return bytes1(uint8(b) + 0x57);
