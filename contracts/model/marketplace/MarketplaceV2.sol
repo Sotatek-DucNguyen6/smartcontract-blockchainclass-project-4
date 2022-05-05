@@ -4,10 +4,12 @@ import "../coins/MyMarketPlaceCoin.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/utils/StorageSlot.sol";
 import "./MarketplaceV1.sol";
+
 contract MarketplaceV2 is MarketplaceV1 {
     function version() public pure virtual override returns (string memory) {
         return "V2";
     }
+
     function CreateOrder(uint256 tokenId, uint256 price)
         external
         override
@@ -29,6 +31,7 @@ contract MarketplaceV2 is MarketplaceV1 {
         emit SellerCreateOrder(newItemId, tokenId, price);
         return newItemId;
     }
+
     function MatchOrder(uint256 id)
         external
         payable

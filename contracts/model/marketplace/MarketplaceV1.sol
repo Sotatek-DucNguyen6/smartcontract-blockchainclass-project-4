@@ -5,6 +5,7 @@ import "../../library/Converter.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
+
 contract MarketplaceV1 is
     Initializable,
     OwnableUpgradeable,
@@ -12,36 +13,44 @@ contract MarketplaceV1 is
     UUPSUpgradeable
 {
     MyMarketPlaceCoin private token;
-    address private TreasuryAddress ;
+    address private TreasuryAddress;
     event changeTreasuryAddress(address from, address to);
+
     function getTreasuryAddress() public view returns (address) {
         return TreasuryAddress;
     }
+
     function setTreasuryAddress(address _newTreasuryAddress) public onlyOwner {
         address oldTreasuryAddress = TreasuryAddress;
         TreasuryAddress = payable(_newTreasuryAddress);
         emit changeTreasuryAddress(oldTreasuryAddress, _newTreasuryAddress);
     }
+
     function getToken() public view returns (MyMarketPlaceCoin) {
         return token;
     }
+
     function setToken(string memory _token) public {
         token = MyMarketPlaceCoin(toAddress(_token));
     }
+
     /// @custom:oz-upgrades-unsafe-allow constructor
     constructor() initializer {
         console.log(version());
     }
+
     function initialize() public initializer {
         __Ownable_init();
         __UUPSUpgradeable_init();
         console.log(version());
     }
+
     function _authorizeUpgrade(address newImplementation)
         internal
         override
         onlyOwner
     {}
+
     struct Item {
         uint256 id;
         uint256 tokenId;
@@ -78,6 +87,7 @@ contract MarketplaceV1 is
         require(!items[id].isSold, "Item is already sold");
         _;
     }
+
     /*
      * end
      */
@@ -106,6 +116,7 @@ contract MarketplaceV1 is
         emit SellerCreateOrder(newItemId, tokenId, price);
         return newItemId;
     }
+
     function MatchOrder(uint256 id)
         external
         payable
@@ -124,9 +135,11 @@ contract MarketplaceV1 is
         items[id].seller.transfer(msg.value);
         emit itemSold(id, msg.sender, items[id].price);
     }
+
     function viewItem() public view returns (Item[] memory) {
         return items;
     }
+
     function changePriceItem(uint256 _itemId, uint256 _newPrice)
         public
         OnlyItemOwner(_itemId)
@@ -136,6 +149,7 @@ contract MarketplaceV1 is
         items[_itemId].price = _newPrice;
         emit changePrice(_itemId, _oldPrice, _newPrice);
     }
+
     /*
      * end
      */
