@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 contract Staking is Ownable {
     MyMarketPlaceCoin private _MyMarketPlaceCoin;
     RewardToken private _RewardToken;
+
     struct Staker {
         uint256 tokenId;
         uint256 stakeTime;
@@ -31,11 +32,13 @@ contract Staking is Ownable {
     event Unstaked(address from, uint256 tokenId);
     event UpdateReward(address to, uint256 oldReward, uint256 newReward);
     event RewardPaid(address to, uint256 reward);
+    //modifier
     modifier claimable() {
         require(_rewards[msg.sender] > 0, "You cannot claim the reward");
         _;
     }
 
+    //Hashrate
     function setHashrate(uint256 tokenId, uint256 value) external onlyOwner {
         _hashrate[tokenId] = value;
         emit UpdateHashrate(tokenId, value);
@@ -45,6 +48,8 @@ contract Staking is Ownable {
         return _hashrate[tokenId];
     }
 
+    //stake funtion
+   
     function stake(uint256 tokenId) external {
         _stake(tokenId, msg.sender);
     }
@@ -73,7 +78,6 @@ contract Staking is Ownable {
     }
 
     function _stake(uint256 tokenId, address tokenOwner) private {
-       
         _MyMarketPlaceCoin.transferFrom(tokenOwner, address(this), tokenId);
         _stakingRewards[tokenOwner].push(
             Staker({
@@ -90,10 +94,7 @@ contract Staking is Ownable {
     }
 
     function _unStake(uint256 tokenId, address tokenOwner) private {
-        require(
-            _staked[tokenId].owner == tokenOwner,
-            "You must be the owner of the nft token to perform this action"
-        );
+    
         _MyMarketPlaceCoin.transferFrom(address(this), tokenOwner, tokenId);
         _updateReward(
             tokenOwner,
@@ -121,7 +122,8 @@ contract Staking is Ownable {
         uint256 stakedDays = (block.timestamp - stakeTime) / 86400;
         uint256 oldReward = _rewards[to];
         //reward = stakedDays * hashrate
-        _rewards[to] = stakedDays * hashrate + oldReward;
+        _rewards[to] = stakedDays * hashrate;
         emit UpdateReward(to, oldReward, _rewards[to]);
     }
+    
 }
