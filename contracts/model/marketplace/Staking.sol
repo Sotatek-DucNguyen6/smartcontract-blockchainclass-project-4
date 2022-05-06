@@ -73,10 +73,7 @@ contract Staking is Ownable {
     }
 
     function _stake(uint256 tokenId, address tokenOwner) private {
-        require(
-            _MyMarketPlaceCoin.ownerOf(tokenId) == tokenOwner,
-            "You must be the owner of the nft token to perform this action"
-        );
+       
         _MyMarketPlaceCoin.transferFrom(tokenOwner, address(this), tokenId);
         _stakingRewards[tokenOwner].push(
             Staker({

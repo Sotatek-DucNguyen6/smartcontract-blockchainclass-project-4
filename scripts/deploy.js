@@ -21,7 +21,7 @@ async function main() {
     // Upgrading
     const MarketplaceV2 = await ethers.getContractFactory("MarketplaceV2");
     console.log("4");
-    const marketplaceV2 =  await MarketplaceV2.deploy();
+    const marketplaceV2 = await MarketplaceV2.deploy();
     await marketplaceV2.deployed();
     // const marketplaceV2 = await upgrades.upgradeProxy(marketplaceV1.address, MarketplaceV2);
     console.log("MarketplaceV2: ", marketplaceV2.address);
